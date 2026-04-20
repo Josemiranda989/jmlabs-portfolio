@@ -1039,6 +1039,54 @@ html.light .icon-moon { display: block; }
 .footer a { color: var(--text-dim); border-bottom: 1px dotted var(--hairline-2); padding-bottom: 1px; }
 .footer a:hover { color: var(--accent); border-color: var(--accent); }
 
+/* ── TOC sidebar (desktop only ≥1280px) ── */
+.toc {
+  position: fixed;
+  right: var(--s-6);
+  top: 50%;
+  transform: translateY(-50%);
+  display: none;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 30;
+}
+@media (min-width: 1280px) { .toc { display: flex; } }
+.toc-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1px solid var(--text-mute);
+  background: transparent;
+  position: relative;
+  transition: all var(--dur) var(--ease-out);
+}
+.toc-dot:hover { border-color: var(--accent); transform: scale(1.15); }
+.toc-dot.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 5px color-mix(in oklab, var(--accent) 20%, transparent);
+}
+/* tooltip on hover/active — shows section label */
+.toc-dot::before {
+  content: attr(data-label-es);
+  position: absolute;
+  right: calc(100% + 14px);
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  color: var(--text);
+  background: var(--bg-elev);
+  border: 1px solid var(--hairline);
+  padding: 4px 10px;
+  border-radius: var(--r-1);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur) var(--ease-out);
+}
+html[lang="en"] .toc-dot::before { content: attr(data-label-en); }
+.toc-dot:hover::before, .toc-dot.active::before { opacity: 1; }
+
 /* fade-ins — scoped solo a projects + col-cards para evitar sobrecarga visual
    (sections y contact-cards ya estaban reveal pero era demasiado) */
 @media (prefers-reduced-motion: no-preference) {

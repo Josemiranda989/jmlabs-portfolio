@@ -51,9 +51,8 @@ import Layout from '../layouts/Layout.astro';
     <section class="hero">
       <div class="container">
         <div class="hero-tag">
-          <span class="dot"></span>
-          <span data-i18n="es">Disponible para oportunidades · AI product teams</span>
-          <span data-i18n="en">Available for opportunities · AI product teams</span>
+          <span data-i18n="es">Full-stack + AI · Aguilares, Tucumán · AR</span>
+          <span data-i18n="en">Full-stack + AI · Aguilares, Tucumán · AR</span>
         </div>
         <h1>
           <span class="line-1">José</span>
@@ -625,6 +624,15 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </section>
 
+    {/* ─── TOC sidebar (desktop only ≥1280px) ─── */}
+    <aside class="toc" aria-label="Page progress">
+      <a href="#projects" class="toc-dot" data-label-es="Proyectos" data-label-en="Work"></a>
+      <a href="#about" class="toc-dot" data-label-es="Sobre mí" data-label-en="About"></a>
+      <a href="#stack" class="toc-dot" data-label-es="Stack" data-label-en="Stack"></a>
+      <a href="#experience" class="toc-dot" data-label-es="Trayecto" data-label-en="Experience"></a>
+      <a href="#contact" class="toc-dot" data-label-es="Contacto" data-label-en="Contact"></a>
+    </aside>
+
     {/* ─── FOOTER ─── */}
     <footer class="footer">
       <div class="container footer-inner">
@@ -737,8 +745,8 @@ import Layout from '../layouts/Layout.astro';
       io.observe(el);
     });
 
-    /* scroll-spy — marca el link activo según la section visible */
-    const spyLinks = document.querySelectorAll<HTMLAnchorElement>('.nav-links a[href^="#"]');
+    /* scroll-spy — marca el link activo según la section visible (nav + TOC) */
+    const spyLinks = document.querySelectorAll<HTMLAnchorElement>('.nav-links a[href^="#"], .toc a[href^="#"]');
     const sectionsMap = new Map<Element, HTMLAnchorElement[]>();
     spyLinks.forEach((link) => {
       const id = link.getAttribute('href')?.slice(1);

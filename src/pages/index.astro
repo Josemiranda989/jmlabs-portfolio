@@ -396,7 +396,7 @@ import Layout from '../layouts/Layout.astro';
             </div>
             <div>
               <dt data-i18n="es">Formación</dt><dt data-i18n="en">Education</dt>
-              <dd>Técnico Superior en Programación <br><span style="color:var(--text-mute); font-size:13px">Teclab · 2024—2025 (in progress)</span></dd>
+              <dd>Técnico Superior en Programación <br><span style="color:var(--text-mute); font-size:13px">Teclab · 2024—2025</span></dd>
             </div>
             <div>
               <dt data-i18n="es">Carrera previa</dt><dt data-i18n="en">Previous career</dt>
@@ -736,5 +736,27 @@ import Layout from '../layouts/Layout.astro';
       el.classList.add('reveal');
       io.observe(el);
     });
+
+    /* scroll-spy — marca el link activo según la section visible */
+    const spyLinks = document.querySelectorAll<HTMLAnchorElement>('.nav-links a[href^="#"]');
+    const sectionsMap = new Map<Element, HTMLAnchorElement[]>();
+    spyLinks.forEach((link) => {
+      const id = link.getAttribute('href')?.slice(1);
+      if (!id) return;
+      const sec = document.getElementById(id);
+      if (!sec) return;
+      if (!sectionsMap.has(sec)) sectionsMap.set(sec, []);
+      sectionsMap.get(sec)!.push(link);
+    });
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          spyLinks.forEach((l) => l.classList.remove('active'));
+          const matches = sectionsMap.get(entry.target) || [];
+          matches.forEach((l) => l.classList.add('active'));
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    sectionsMap.forEach((_, sec) => spy.observe(sec));
   </script>
 </Layout>

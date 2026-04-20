@@ -1,0 +1,729 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+  <a href="#top" class="skip-link" data-i18n="es">Saltar al contenido</a>
+  <a href="#top" class="skip-link" data-i18n="en">Skip to content</a>
+
+  {/* ─── NAV ─── */}
+  <header class="nav">
+    <div class="container nav-inner">
+      <a href="#top" class="logo" aria-label="jmlabs home">jmlabs</a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#projects"><span class="num">01</span> <span data-i18n="es">Proyectos</span><span data-i18n="en">Work</span></a>
+        <a href="#about"><span class="num">02</span> <span data-i18n="es">Sobre mí</span><span data-i18n="en">About</span></a>
+        <a href="#stack"><span class="num">03</span> Stack</a>
+        <a href="#experience"><span class="num">04</span> <span data-i18n="es">Trayecto</span><span data-i18n="en">Experience</span></a>
+        <a href="#contact"><span class="num">05</span> <span data-i18n="es">Contacto</span><span data-i18n="en">Contact</span></a>
+      </nav>
+      <div class="nav-controls">
+        <div class="chip-toggle" role="tablist" aria-label="Language">
+          <button id="lang-es" aria-pressed="true">ES</button>
+          <button id="lang-en" aria-pressed="false">EN</button>
+        </div>
+        <button id="theme-btn" class="icon-btn" aria-label="Toggle theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4a8.5 8.5 0 1 0 11.5 11.5z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+        </button>
+        <button id="mobile-menu-btn" class="nav-menu-btn" aria-label="Open menu" aria-controls="mobile-drawer" aria-expanded="false">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  {/* ─── MOBILE DRAWER ─── */}
+  <div id="drawer-backdrop" aria-hidden="true"></div>
+  <aside id="mobile-drawer" aria-hidden="true" aria-label="Mobile navigation">
+    <button id="drawer-close" class="drawer-close" aria-label="Close menu">✕</button>
+    <nav class="drawer-links" aria-label="Mobile">
+      <a href="#projects"><span class="num">01</span><span data-i18n="es">Proyectos</span><span data-i18n="en">Work</span></a>
+      <a href="#about"><span class="num">02</span><span data-i18n="es">Sobre mí</span><span data-i18n="en">About</span></a>
+      <a href="#stack"><span class="num">03</span>Stack</a>
+      <a href="#experience"><span class="num">04</span><span data-i18n="es">Trayecto</span><span data-i18n="en">Experience</span></a>
+      <a href="#contact"><span class="num">05</span><span data-i18n="es">Contacto</span><span data-i18n="en">Contact</span></a>
+    </nav>
+  </aside>
+
+  <main id="top">
+    {/* ─── HERO ─── */}
+    <section class="hero">
+      <div class="container">
+        <div class="hero-tag">
+          <span class="dot"></span>
+          <span data-i18n="es">Disponible para oportunidades · AI product teams</span>
+          <span data-i18n="en">Available for opportunities · AI product teams</span>
+        </div>
+        <h1>
+          <span class="line-1">José</span>
+          <span class="line-2">Miranda<span style="color:var(--text)">.</span></span>
+        </h1>
+        <div class="hero-rule"></div>
+        <p class="hero-sub" data-i18n="es">
+          Full-stack developer construyendo productos con <em style="color:var(--accent); font-style:italic;">IA</em>.
+        </p>
+        <p class="hero-sub" data-i18n="en">
+          Full-stack developer building products with <em style="color:var(--accent); font-style:italic;">AI</em>.
+        </p>
+        <p class="hero-pitch" data-i18n="es">
+          Construyo aplicaciones end-to-end con integración de IA, desde la base de datos hasta el deploy en mi propia infraestructura. También enseño a otros a hacerlo.
+        </p>
+        <p class="hero-pitch" data-i18n="en">
+          I build end-to-end applications with AI integration, from database to deploy on my own infrastructure. I also teach others how to do it.
+        </p>
+        <div class="hero-ctas">
+          <a href="#projects" class="btn btn-primary">
+            <span data-i18n="es">Ver proyectos</span><span data-i18n="en">See work</span>
+            <span class="arrow" aria-hidden="true">↓</span>
+          </a>
+          <a href="#contact" class="btn btn-ghost">
+            <span data-i18n="es">Contactar</span><span data-i18n="en">Get in touch</span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+        <div class="hero-meta">
+          <span><strong data-i18n="es">Ubicación:</strong><strong data-i18n="en">Based in:</strong> Aguilares, Tucumán · AR</span>
+          <span><strong data-i18n="es">Actualmente:</strong><strong data-i18n="en">Currently:</strong> Pulpou · Digital House</span>
+          <span><strong>Stack:</strong> Next.js · Node · Gemini API · Cloudflare</span>
+        </div>
+      </div>
+    </section>
+
+    {/* ─── PROJECTS ─── */}
+    <section id="projects" class="section">
+      <div class="container">
+        <div class="section-eyebrow">
+          <span>01 / <span data-i18n="es">Proyectos destacados</span><span data-i18n="en">Featured work</span></span>
+        </div>
+        <h2 class="section-title" data-i18n="es">Productos que <em>construí y opero</em>.</h2>
+        <h2 class="section-title" data-i18n="en">Products I <em>built and run</em>.</h2>
+        <p class="section-intro" data-i18n="es">
+          Dos piezas que muestran el combo completo: integración con IA real (no wrapper de ChatGPT) e infraestructura auto-hosteada detrás de Cloudflare Zero Trust.
+        </p>
+        <p class="section-intro" data-i18n="en">
+          Two pieces that show the full combo: real AI integration (not a ChatGPT wrapper) and self-hosted infrastructure behind Cloudflare Zero Trust.
+        </p>
+
+        <div style="margin-top: var(--s-8)">
+          {/* CoachIA */}
+          <article class="project">
+            <div class="project-body">
+              <span class="project-num">01 — coachia.jmlabs.app</span>
+              <h3>CoachIA</h3>
+              <p class="project-tagline" data-i18n="es">
+                Coach digital personalizado con IA para entrenamientos de gym y ciclismo.
+              </p>
+              <p class="project-tagline" data-i18n="en">
+                AI-powered personal coach for strength training and cycling workouts.
+              </p>
+              <p class="project-problem" data-i18n="es">
+                "Conseguir un coach personal es caro e inflexible. CoachIA genera rutinas personalizadas con IA, integra datos de Strava y permite logging manual de sets/reps. Pensado para atletas que combinan ciclismo + fuerza."
+              </p>
+              <p class="project-problem" data-i18n="en">
+                "Personal coaching is expensive and inflexible. CoachIA generates personalized routines with AI, integrates Strava data, and lets you log sets/reps manually. Built for athletes combining cycling + strength."
+              </p>
+
+              <div class="project-chips">
+                <span class="chip">Next.js 16</span>
+                <span class="chip">TypeScript</span>
+                <span class="chip">Prisma</span>
+                <span class="chip">SQLite</span>
+                <span class="chip" style="color:var(--accent); border-color: color-mix(in oklab, var(--accent) 40%, var(--hairline))">Gemini API</span>
+                <span class="chip">NextAuth</span>
+                <span class="chip">Resend</span>
+                <span class="chip">Strava OAuth</span>
+                <span class="chip">Telegram Bot</span>
+                <span class="chip">Docker</span>
+                <span class="chip">Cloudflare Tunnel</span>
+              </div>
+
+              <ul class="project-hl">
+                <li data-i18n="es">Prompt engineering real con Gemini — rutinas que se adaptan al progreso del atleta.</li>
+                <li data-i18n="en">Real Gemini prompt engineering — routines that adapt to the athlete's progress.</li>
+                <li data-i18n="es">OAuth completo con Strava, con refresh token handling robusto.</li>
+                <li data-i18n="en">Full Strava OAuth with robust refresh token handling.</li>
+                <li data-i18n="es">Forgot-password con JWT + Resend, flujo completo de auth.</li>
+                <li data-i18n="en">Forgot-password with JWT + Resend, full auth flow.</li>
+                <li data-i18n="es">Deploy self-hosted detrás de Cloudflare Zero Trust — cero puertos abiertos.</li>
+                <li data-i18n="en">Self-hosted deploy behind Cloudflare Zero Trust — zero open ports.</li>
+              </ul>
+
+              <div class="project-ctas">
+                <a href="https://coachia.jmlabs.app" target="_blank" rel="noopener" class="btn btn-primary">
+                  <span data-i18n="es">Ver demo live</span><span data-i18n="en">See live demo</span>
+                  <span class="arrow">↗</span>
+                </a>
+                <a href="#" class="btn btn-ghost" aria-disabled="true" style="opacity:0.6; cursor:not-allowed">
+                  <span data-i18n="es">Código (privado)</span><span data-i18n="en">Code (private)</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Mock UI — replica fiel de coachia.jmlabs.app (paleta + estructura real) */}
+            <div class="project-media">
+              <div class="mock">
+                <div class="ci-window">
+                  <div class="ci-tabs">
+                    <span class="dot"></span><span class="dot"></span><span class="dot on"></span>
+                    <span class="url">coachia.jmlabs.app</span>
+                  </div>
+
+                  <div class="ci-eyebrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M12 3l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/>
+                    </svg>
+                    <span data-i18n="es">PANEL DE CONTROL</span>
+                    <span data-i18n="en">CONTROL PANEL</span>
+                  </div>
+
+                  <div class="ci-greeting" data-i18n="es">Buenos días, José.</div>
+                  <div class="ci-greeting" data-i18n="en">Good morning, José.</div>
+                  <p class="ci-date" data-i18n="es">Lunes 20 de abril · ¿Listo para superar tus límites?</p>
+                  <p class="ci-date" data-i18n="en">Monday · Ready to push past your limits?</p>
+
+                  <div class="ci-progress">
+                    <div class="ci-progress-row">
+                      <span data-i18n="es">Progreso semanal</span>
+                      <span data-i18n="en">Weekly progress</span>
+                      <span class="count">3/5 <span data-i18n="es">días</span><span data-i18n="en">days</span></span>
+                    </div>
+                    <div class="ci-progress-track">
+                      <div class="ci-progress-fill" style="width: 60%"></div>
+                    </div>
+                  </div>
+
+                  <a class="ci-feature" href="#" aria-label="Entrenamiento de hoy">
+                    <div class="ci-feature-body">
+                      <div class="ci-feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <span class="ci-kicker" data-i18n="es">Acción principal</span>
+                        <span class="ci-kicker" data-i18n="en">Primary action</span>
+                        <div class="ci-feature-title" data-i18n="es">Entrenamiento de Hoy</div>
+                        <div class="ci-feature-title" data-i18n="en">Today's Workout</div>
+                        <p data-i18n="es">PUSH · Empuje · 6 ejercicios</p>
+                        <p data-i18n="en">PUSH · day 2 · 6 exercises</p>
+                      </div>
+                    </div>
+                    <div class="ci-ai-badge">Gemini · AI</div>
+                  </a>
+
+                  <div class="ci-grid">
+                    <div class="ci-mini red">
+                      <div class="ci-mini-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <rect x="4" y="6" width="16" height="14" rx="3"/>
+                          <circle cx="9" cy="12" r="1.5" fill="currentColor"/>
+                          <circle cx="15" cy="12" r="1.5" fill="currentColor"/>
+                          <path d="M12 2v4"/>
+                        </svg>
+                      </div>
+                      <span class="ci-mini-title" data-i18n="es">Generar con IA</span>
+                      <span class="ci-mini-title" data-i18n="en">Generate with AI</span>
+                    </div>
+                    <div class="ci-mini amber">
+                      <div class="ci-mini-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <rect x="3" y="5" width="18" height="16" rx="2"/>
+                          <path d="M3 10h18M8 3v4M16 3v4"/>
+                        </svg>
+                      </div>
+                      <span class="ci-mini-title" data-i18n="es">Toda la semana</span>
+                      <span class="ci-mini-title" data-i18n="en">Whole week</span>
+                    </div>
+                    <div class="ci-mini emerald">
+                      <div class="ci-mini-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                          <path d="M5 20v-6M12 20V10M19 20v-12"/>
+                        </svg>
+                      </div>
+                      <span class="ci-mini-title" data-i18n="es">Métricas</span>
+                      <span class="ci-mini-title" data-i18n="en">Metrics</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          {/* Homelab */}
+          <article class="project reverse">
+            <div class="project-body">
+              <span class="project-num">02 — <span data-i18n="es">caso técnico</span><span data-i18n="en">technical case study</span></span>
+              <h3 data-i18n="es">Homelab · Cloudflare Zero Trust</h3>
+              <h3 data-i18n="en">Homelab · Cloudflare Zero Trust</h3>
+              <p class="project-tagline" data-i18n="es">
+                Migración completa: de DuckDNS + Nginx Proxy Manager a Cloudflare Zero Trust en un día, sin downtime.
+              </p>
+              <p class="project-tagline" data-i18n="en">
+                Full migration from DuckDNS + NPM to Cloudflare Zero Trust in one day, zero downtime.
+              </p>
+
+              <div class="metrics">
+                <div class="metric"><div class="mv"><span>7</span></div><div class="ml" data-i18n="es">subdominios expuestos</div><div class="ml" data-i18n="en">subdomains exposed</div></div>
+                <div class="metric"><div class="mv"><span>0</span></div><div class="ml" data-i18n="es">puertos abiertos</div><div class="ml" data-i18n="en">open ports</div></div>
+                <div class="metric"><div class="mv"><span>54</span><small>US$</small></div><div class="ml" data-i18n="es">ahorrados / año vs VPS</div><div class="ml" data-i18n="en">saved / yr vs VPS</div></div>
+                <div class="metric"><div class="mv"><span>6</span></div><div class="ml" data-i18n="es">apps privadas protegidas</div><div class="ml" data-i18n="en">private apps protected</div></div>
+                <div class="metric"><div class="mv"><span>1</span></div><div class="ml" data-i18n="es">día de implementación</div><div class="ml" data-i18n="en">day of implementation</div></div>
+              </div>
+
+              <div class="project-chips">
+                <span class="chip" style="color:var(--accent); border-color: color-mix(in oklab, var(--accent) 40%, var(--hairline))">Cloudflare Tunnel</span>
+                <span class="chip">Cloudflare Access</span>
+                <span class="chip">Docker</span>
+                <span class="chip">Windows Service</span>
+                <span class="chip">Raspberry Pi</span>
+                <span class="chip">Let's Encrypt</span>
+                <span class="chip">Zero Trust</span>
+              </div>
+
+              <ul class="project-hl">
+                <li data-i18n="es">7 subdominios con routing correcto — sin puertos incoming abiertos en el router.</li>
+                <li data-i18n="en">7 subdomains routed correctly — no incoming ports open on the router.</li>
+                <li data-i18n="es">Cloudflare Access + Google OAuth con whitelist para Immich, Jellyfin, Home Assistant, n8n, Portainer, Overseerr.</li>
+                <li data-i18n="en">Cloudflare Access + Google OAuth with allowlist for Immich, Jellyfin, Home Assistant, n8n, Portainer, Overseerr.</li>
+                <li data-i18n="es">Home Assistant en Raspberry Pi accesible externo vía tunnel.</li>
+                <li data-i18n="en">Home Assistant on Raspberry Pi accessible externally via tunnel.</li>
+                <li data-i18n="es">Troubleshooting real: Docker credential helper, Windows Service + cloudflared binPath.</li>
+                <li data-i18n="en">Real troubleshooting: Docker credential helper, Windows Service + cloudflared binPath.</li>
+              </ul>
+
+              {/* TODO: cuando tengas el blog post, reincorporar CTA:
+                   <a href="/blog/homelab-migration" class="btn btn-ghost">Leer case study completo →</a> */}
+            </div>
+
+            {/* Diagram */}
+            <div class="project-media">
+              <svg class="diagram" viewBox="0 0 400 400" role="img" aria-label="Homelab architecture diagram">
+                <defs>
+                  <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                    <path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/>
+                  </marker>
+                </defs>
+
+                <rect x="130" y="14" width="140" height="34" rx="17" fill="none" stroke="var(--hairline-2)" stroke-dasharray="3 3"/>
+                <text x="200" y="36" font-family="Geist Mono, monospace" font-size="11" fill="var(--text-dim)" text-anchor="middle">Internet · 0 ports open</text>
+
+                <rect x="90" y="72" width="220" height="56" rx="12" fill="color-mix(in oklab, var(--accent) 14%, transparent)" stroke="var(--accent)" stroke-width="1.4"/>
+                <text x="200" y="92" font-family="Fraunces, serif" font-size="15" fill="var(--text)" text-anchor="middle" font-style="italic">Cloudflare Edge</text>
+                <text x="200" y="112" font-family="Geist Mono, monospace" font-size="10" fill="var(--accent)" text-anchor="middle" letter-spacing="1">TUNNEL · ACCESS · ZERO TRUST</text>
+
+                <path d="M200,128 L200,162" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#arr)"/>
+                <text x="208" y="150" font-family="Geist Mono, monospace" font-size="10" fill="var(--text-mute)">cloudflared</text>
+
+                <rect x="30" y="168" width="340" height="210" rx="14" fill="none" stroke="var(--hairline-2)"/>
+                <text x="44" y="186" font-family="Geist Mono, monospace" font-size="10" fill="var(--text-mute)" letter-spacing="1">HOME NETWORK · LAN ONLY</text>
+
+                <rect x="50" y="204" width="150" height="78" rx="10" fill="var(--surface)" stroke="var(--hairline-2)"/>
+                <text x="125" y="226" font-family="Fraunces, serif" font-size="14" fill="var(--text)" text-anchor="middle">Windows host</text>
+                <text x="125" y="244" font-family="Geist Mono, monospace" font-size="9" fill="var(--text-mute)" text-anchor="middle">docker · 6 services</text>
+                <text x="125" y="262" font-family="Geist Mono, monospace" font-size="9" fill="var(--text-mute)" text-anchor="middle">cloudflared as service</text>
+
+                <rect x="220" y="204" width="130" height="78" rx="10" fill="var(--surface)" stroke="var(--hairline-2)"/>
+                <text x="285" y="226" font-family="Fraunces, serif" font-size="14" fill="var(--text)" text-anchor="middle">Raspberry Pi</text>
+                <text x="285" y="244" font-family="Geist Mono, monospace" font-size="9" fill="var(--text-mute)" text-anchor="middle">home assistant</text>
+                <text x="285" y="262" font-family="Geist Mono, monospace" font-size="9" fill="var(--text-mute)" text-anchor="middle">cloudflared tunnel</text>
+
+                <path d="M200,162 L125,204" stroke="var(--accent)" stroke-width="1" fill="none" opacity="0.55"/>
+                <path d="M200,162 L285,204" stroke="var(--accent)" stroke-width="1" fill="none" opacity="0.55"/>
+
+                <g font-family="Geist Mono, monospace" font-size="9.5" fill="var(--text-dim)">
+                  <rect x="50" y="304" width="90" height="20" rx="4" fill="var(--surface-2)" stroke="var(--hairline)"/>
+                  <text x="95" y="318" text-anchor="middle">immich.jm</text>
+                  <rect x="150" y="304" width="90" height="20" rx="4" fill="var(--surface-2)" stroke="var(--hairline)"/>
+                  <text x="195" y="318" text-anchor="middle">jellyfin.jm</text>
+                  <rect x="250" y="304" width="100" height="20" rx="4" fill="var(--surface-2)" stroke="var(--hairline)"/>
+                  <text x="300" y="318" text-anchor="middle">coachia.jm</text>
+
+                  <rect x="50" y="332" width="90" height="20" rx="4" fill="var(--surface-2)" stroke="var(--hairline)"/>
+                  <text x="95" y="346" text-anchor="middle">n8n.jm</text>
+                  <rect x="150" y="332" width="90" height="20" rx="4" fill="var(--surface-2)" stroke="var(--hairline)"/>
+                  <text x="195" y="346" text-anchor="middle">portainer.jm</text>
+                  <rect x="250" y="332" width="100" height="20" rx="4" fill="var(--surface-2)" stroke="var(--hairline)"/>
+                  <text x="300" y="346" text-anchor="middle">overseerr.jm</text>
+
+                  <rect x="150" y="360" width="90" height="12" rx="3" fill="none" stroke="var(--accent)" stroke-dasharray="2 2"/>
+                  <text x="195" y="369" text-anchor="middle" fill="var(--accent)">ha.jm (via pi)</text>
+                </g>
+              </svg>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    {/* ─── ABOUT ─── */}
+    <section id="about" class="section">
+      <div class="container">
+        <div class="section-eyebrow">
+          <span>02 / <span data-i18n="es">Sobre mí</span><span data-i18n="en">About</span></span>
+        </div>
+        <h2 class="section-title" data-i18n="es">De higiene y seguridad a <em>AI products</em>.</h2>
+        <h2 class="section-title" data-i18n="en">From occupational safety to <em>AI products</em>.</h2>
+
+        <div class="about-grid" style="margin-top: var(--s-7)">
+          <div class="about-story">
+            <div data-i18n="es">
+              <p>Soy licenciado en Higiene y Seguridad Laboral que se enamoró del código y nunca volvió.</p>
+              <p>Empecé en 2021 haciendo un bootcamp de full-stack. Hoy, <em>4 años después</em>, construyo productos con IA, enseño a cientos de alumnos en Digital House, y opero mi propia infraestructura en un homelab conectado por Cloudflare Tunnel.</p>
+              <p>Me muevo entre el frontend y el backend con la misma facilidad con la que troubleshooteo una impresora 3D. Me obsesionan las integraciones limpias con APIs externas, el prompt engineering aplicado, y los sistemas que <em>sobreviven al boot sin intervención</em>.</p>
+              <p>Si estás construyendo algo que mezcla producto + IA + infra — hablemos.</p>
+            </div>
+            <div data-i18n="en">
+              <p>I studied Occupational Safety and Health, then fell in love with code — never looked back.</p>
+              <p>I started in 2021 doing a full-stack bootcamp. Today, <em>4 years later</em>, I build products with AI, teach hundreds of students at Digital House, and operate my own infrastructure in a homelab wired through Cloudflare Tunnel.</p>
+              <p>I move between frontend and backend with the same ease I use to troubleshoot a 3D printer. I'm obsessed with clean external API integrations, applied prompt engineering, and systems that <em>survive a reboot untouched</em>.</p>
+              <p>If you're building something that mixes product + AI + infra — let's talk.</p>
+            </div>
+          </div>
+
+          <dl class="quick-facts">
+            <div>
+              <dt data-i18n="es">Ubicación</dt><dt data-i18n="en">Location</dt>
+              <dd>Aguilares, Tucumán — AR <br><span style="color:var(--text-mute); font-size:13px">remote-friendly · GMT−3</span></dd>
+            </div>
+            <div>
+              <dt data-i18n="es">Actualmente</dt><dt data-i18n="en">Currently</dt>
+              <dd>Pulpou · Digital House</dd>
+            </div>
+            <div>
+              <dt data-i18n="es">Idiomas</dt><dt data-i18n="en">Languages</dt>
+              <dd>Español <span style="color:var(--text-mute)">native</span> · English <span style="color:var(--text-mute)">intermediate</span></dd>
+            </div>
+            <div>
+              <dt data-i18n="es">Formación</dt><dt data-i18n="en">Education</dt>
+              <dd>Técnico Superior en Programación <br><span style="color:var(--text-mute); font-size:13px">Teclab · 2024—2025 (in progress)</span></dd>
+            </div>
+            <div>
+              <dt data-i18n="es">Carrera previa</dt><dt data-i18n="en">Previous career</dt>
+              <dd data-i18n="es">Lic. en Higiene y Seguridad Laboral</dd>
+              <dd data-i18n="en">Occupational Safety &amp; Health (Licentiate)</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    {/* ─── STACK ─── */}
+    <section id="stack" class="section">
+      <div class="container">
+        <div class="section-eyebrow">
+          <span>03 / Stack</span>
+        </div>
+        <h2 class="section-title" data-i18n="es">El toolbox, <em>por capa</em>.</h2>
+        <h2 class="section-title" data-i18n="en">The toolbox, <em>by layer</em>.</h2>
+        <p class="section-intro" data-i18n="es">
+          Sin barras de progreso ni porcentajes inventados. Solo las herramientas con las que envío código en producción.
+        </p>
+        <p class="section-intro" data-i18n="en">
+          No progress bars, no made-up percentages. Just the tools I actually ship with.
+        </p>
+
+        <div class="stack-grid" style="margin-top: var(--s-7)">
+          <div class="stack-col">
+            <h3>Frontend <span>01</span></h3>
+            <ul>
+              <li>React</li>
+              <li>Next.js 16</li>
+              <li>TypeScript</li>
+              <li>Astro</li>
+              <li>Tailwind CSS</li>
+              <li><span data-i18n="es">HTML semántico</span><span data-i18n="en">Semantic HTML</span></li>
+            </ul>
+          </div>
+          <div class="stack-col">
+            <h3>Backend <span>02</span></h3>
+            <ul>
+              <li>Node.js</li>
+              <li>Prisma ORM</li>
+              <li>SQLite · MySQL · PostgreSQL</li>
+              <li>MongoDB</li>
+              <li>REST APIs</li>
+              <li>NextAuth · JWT</li>
+            </ul>
+          </div>
+          <div class="stack-col">
+            <h3>AI &amp; Data <span>03</span></h3>
+            <ul>
+              <li>Google Gemini API</li>
+              <li>Groq · Llama 3.3 70B</li>
+              <li>Prompt engineering</li>
+              <li>DOM manipulation</li>
+              <li>Web scraping</li>
+              <li>Structured extraction</li>
+            </ul>
+          </div>
+          <div class="stack-col">
+            <h3>Infra <span>04</span></h3>
+            <ul>
+              <li>Docker · docker-compose</li>
+              <li>Cloudflare Tunnel</li>
+              <li>Cloudflare Access</li>
+              <li>Cloudflare Pages</li>
+              <li>Linux · Windows Server</li>
+              <li>n8n · Git · self-hosting</li>
+            </ul>
+          </div>
+          <div class="stack-col">
+            <h3>Hardware <span>05</span></h3>
+            <ul>
+              <li><span data-i18n="es">Impresión 3D</span><span data-i18n="en">3D printing</span></li>
+              <li>Klipper firmware</li>
+              <li>Raspberry Pi</li>
+              <li>Fusion 360</li>
+              <li>Home Assistant</li>
+              <li>Tinkercad</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ─── TEACHING / CREATOR ─── */}
+    <section class="section">
+      <div class="container">
+        <div class="section-eyebrow">
+          <span>04 / <span data-i18n="es">Enseñar &amp; crear</span><span data-i18n="en">Teach &amp; make</span></span>
+        </div>
+        <h2 class="section-title" data-i18n="es">También <em>enseño</em> y <em>hago cosas</em>.</h2>
+        <h2 class="section-title" data-i18n="en">I also <em>teach</em> and <em>make things</em>.</h2>
+
+        <div class="two-col" style="margin-top: var(--s-7)">
+          <div class="col-card">
+            <div class="col-eyebrow" data-i18n="es">Enseñanza</div>
+            <div class="col-eyebrow" data-i18n="en">Teaching</div>
+            <h3>Digital House</h3>
+            <div class="col-meta">2022 — <span data-i18n="es">presente</span><span data-i18n="en">present</span> · 3+ <span data-i18n="es">años</span><span data-i18n="en">years</span></div>
+            <p data-i18n="es">
+              Profesor del curso <em>Certified Tech Developer</em> (Full-stack Node.js). Community Manager Técnico apoyando a cientos de alumnos en modalidad On-Demand. Experiencia simplificando conceptos complejos sin perder rigor técnico.
+            </p>
+            <p data-i18n="en">
+              Instructor of the <em>Certified Tech Developer</em> program (Full-stack Node.js). Technical Community Manager supporting hundreds of On-Demand students. Skilled at simplifying complex concepts without losing technical rigor.
+            </p>
+            <div class="col-links">
+              <a class="col-link" href="https://linkedin.com/in/josemiranda989" target="_blank" rel="noopener">LinkedIn ↗</a>
+            </div>
+          </div>
+
+          <div class="col-card">
+            <div class="col-eyebrow" data-i18n="es">Lado maker</div>
+            <div class="col-eyebrow" data-i18n="en">Maker side</div>
+            <h3>PrintAll.tuc</h3>
+            <div class="col-meta">2022 — <span data-i18n="es">presente</span><span data-i18n="en">present</span> · <span data-i18n="es">studio propio</span><span data-i18n="en">own studio</span></div>
+            <p data-i18n="es">
+              Studio de impresión 3D. Klipper firmware, Raspberry Pi, Fusion 360, Tinkercad. Donde experimento con el lado maker cuando no estoy codeando.
+            </p>
+            <p data-i18n="en">
+              3D printing studio. Klipper firmware, Raspberry Pi, Fusion 360, Tinkercad. Where I experiment with the maker side when I'm not coding.
+            </p>
+            <div class="col-links">
+              <a class="col-link" href="https://instagram.com/printall.tuc" target="_blank" rel="noopener">Instagram ↗</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ─── EXPERIENCE ─── */}
+    <section id="experience" class="section">
+      <div class="container">
+        <div class="section-eyebrow">
+          <span>05 / <span data-i18n="es">Trayectoria</span><span data-i18n="en">Experience</span></span>
+        </div>
+        <h2 class="section-title" data-i18n="es">Línea de tiempo, <em>condensada</em>.</h2>
+        <h2 class="section-title" data-i18n="en">Timeline, <em>condensed</em>.</h2>
+
+        <ol class="timeline" style="margin-top: var(--s-7)">
+          <li class="tl-row">
+            <div class="tl-date">Nov 2024 — <span data-i18n="es">Ahora</span><span data-i18n="en">Now</span></div>
+            <div class="tl-company">Pulpou</div>
+            <div class="tl-role" data-i18n="es">Developer — scraping &amp; DOM manipulation a escala.</div>
+            <div class="tl-role" data-i18n="en">Developer — scraping &amp; DOM manipulation at scale.</div>
+            <div class="tl-badge">current</div>
+          </li>
+          <li class="tl-row">
+            <div class="tl-date">May 2024 — <span data-i18n="es">Ahora</span><span data-i18n="en">Now</span></div>
+            <div class="tl-company">Digital House</div>
+            <div class="tl-role" data-i18n="es">Technical Community Manager · On-Demand.</div>
+            <div class="tl-role" data-i18n="en">Technical Community Manager · On-Demand.</div>
+            <div class="tl-badge">current</div>
+          </li>
+          <li class="tl-row">
+            <div class="tl-date">Jul 2023 — <span data-i18n="es">Ahora</span><span data-i18n="en">Now</span></div>
+            <div class="tl-company">Digital House</div>
+            <div class="tl-role" data-i18n="es">Full-stack instructor + content manager.</div>
+            <div class="tl-role" data-i18n="en">Full-stack instructor + content manager.</div>
+            <div class="tl-badge">current</div>
+          </li>
+          <li class="tl-row">
+            <div class="tl-date">Aug 2022 — <span data-i18n="es">Ahora</span><span data-i18n="en">Now</span></div>
+            <div class="tl-company">PrintAll.tuc</div>
+            <div class="tl-role" data-i18n="es">Founder — studio de impresión 3D.</div>
+            <div class="tl-role" data-i18n="en">Founder — 3D printing studio.</div>
+            <div class="tl-badge">current</div>
+          </li>
+          <li class="tl-row">
+            <div class="tl-date">Feb 2022 — Jul 2023</div>
+            <div class="tl-company">Digital House</div>
+            <div class="tl-role" data-i18n="es">Full-stack Node.js instructor.</div>
+            <div class="tl-role" data-i18n="en">Full-stack Node.js instructor.</div>
+            <div class="tl-badge muted"><span data-i18n="es">pasado</span><span data-i18n="en">past</span></div>
+          </li>
+          <li class="tl-row">
+            <div class="tl-date">Jul 2017 — Nov 2017</div>
+            <div class="tl-company">Jais Servicios</div>
+            <div class="tl-role" data-i18n="es">Occupational safety specialist — carrera previa.</div>
+            <div class="tl-role" data-i18n="en">Occupational safety specialist — previous career.</div>
+            <div class="tl-badge muted">pre-dev</div>
+          </li>
+        </ol>
+
+        <p style="margin-top: var(--s-5); font-family: var(--ff-mono); font-size: 13px; color: var(--text-mute);">
+          <span data-i18n="es">Trayectoria completa en </span><span data-i18n="en">Full history on </span>
+          <a href="https://linkedin.com/in/josemiranda989" target="_blank" rel="noopener" style="color:var(--text); border-bottom: 1px solid var(--accent);">LinkedIn ↗</a>.
+        </p>
+      </div>
+    </section>
+
+    {/* ─── CONTACT ─── */}
+    <section id="contact" class="section">
+      <div class="container">
+        <div class="section-eyebrow">
+          <span>06 / <span data-i18n="es">Contacto</span><span data-i18n="en">Contact</span></span>
+        </div>
+        <h2 class="section-title" data-i18n="es">Hablemos de <em>lo que estás construyendo</em>.</h2>
+        <h2 class="section-title" data-i18n="en">Let's talk about <em>what you're building</em>.</h2>
+        <p class="section-intro" data-i18n="es">
+          Sin formularios. Tres canales directos — el que prefieras.
+        </p>
+        <p class="section-intro" data-i18n="en">
+          No forms. Three direct channels — pick your favorite.
+        </p>
+
+        <div class="contact-grid">
+          <a class="contact-card" href="mailto:josemiranda989@gmail.com">
+            <span class="contact-k">Email</span>
+            <span class="contact-v">josemiranda989@gmail.com</span>
+            <span class="contact-arrow">↗</span>
+          </a>
+          <a class="contact-card" href="https://linkedin.com/in/josemiranda989" target="_blank" rel="noopener">
+            <span class="contact-k">LinkedIn</span>
+            <span class="contact-v">/in/josemiranda989</span>
+            <span class="contact-arrow">↗</span>
+          </a>
+          {/* TODO: reemplazar por URL real de GitHub cuando tengas el repo público listo */}
+          <a class="contact-card" href="https://github.com/josemiranda989" target="_blank" rel="noopener">
+            <span class="contact-k">GitHub</span>
+            <span class="contact-v">@josemiranda989</span>
+            <span class="contact-arrow">↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    {/* ─── FOOTER ─── */}
+    <footer class="footer">
+      <div class="container footer-inner">
+        <div>
+          © 2026 José Miranda ·
+          <span data-i18n="es">construido con</span><span data-i18n="en">built with</span>
+          Astro · <span data-i18n="es">deploy en</span><span data-i18n="en">deployed on</span> Cloudflare Pages.
+        </div>
+        <div style="display:flex; gap: var(--s-4); align-items:center;">
+          <a href="#top"><span data-i18n="es">Al inicio</span><span data-i18n="en">Back to top</span> ↑</a>
+          <span style="color: var(--hairline-2)">·</span>
+          <span><span data-i18n="es">Últ. actualización</span><span data-i18n="en">Last updated</span> · Apr 2026</span>
+        </div>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    /* ─── preferences (persisted via localStorage) ─── */
+    const LS_KEY = 'jmlabs.prefs.v1';
+    const saved = (() => {
+      try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch { return {}; }
+    })();
+    const state = {
+      theme: saved.theme || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'),
+      lang: saved.lang || 'es',
+    };
+    function persist() {
+      try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch {}
+    }
+
+    const html = document.documentElement;
+
+    function applyTheme(v: 'dark' | 'light') {
+      html.classList.toggle('dark', v === 'dark');
+      html.classList.toggle('light', v === 'light');
+      state.theme = v;
+      persist();
+    }
+
+    function applyLang(v: 'es' | 'en') {
+      html.setAttribute('lang', v);
+      const esBtn = document.getElementById('lang-es');
+      const enBtn = document.getElementById('lang-en');
+      esBtn?.setAttribute('aria-pressed', String(v === 'es'));
+      enBtn?.setAttribute('aria-pressed', String(v === 'en'));
+      state.lang = v;
+      persist();
+    }
+
+    /* hydrate state into DOM */
+    applyTheme(state.theme as 'dark' | 'light');
+    applyLang(state.lang as 'es' | 'en');
+
+    /* wire up nav controls */
+    document.getElementById('lang-es')?.addEventListener('click', () => applyLang('es'));
+    document.getElementById('lang-en')?.addEventListener('click', () => applyLang('en'));
+    document.getElementById('theme-btn')?.addEventListener('click', () => {
+      applyTheme(state.theme === 'dark' ? 'light' : 'dark');
+    });
+
+    /* mobile drawer */
+    const drawer = document.getElementById('mobile-drawer');
+    const backdrop = document.getElementById('drawer-backdrop');
+    const menuBtn = document.getElementById('mobile-menu-btn');
+    const closeBtn = document.getElementById('drawer-close');
+
+    function openDrawer() {
+      drawer?.setAttribute('aria-hidden', 'false');
+      backdrop?.classList.add('on');
+      menuBtn?.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeDrawer() {
+      drawer?.setAttribute('aria-hidden', 'true');
+      backdrop?.classList.remove('on');
+      menuBtn?.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+    menuBtn?.addEventListener('click', openDrawer);
+    closeBtn?.addEventListener('click', closeDrawer);
+    backdrop?.addEventListener('click', closeDrawer);
+    drawer?.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeDrawer));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && drawer?.getAttribute('aria-hidden') === 'false') closeDrawer();
+    });
+
+    /* reveal-on-scroll */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) {
+          en.target.classList.add('in');
+          io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.section, .project, .col-card, .contact-card').forEach((el) => {
+      el.classList.add('reveal');
+      io.observe(el);
+    });
+  </script>
+</Layout>

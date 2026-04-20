@@ -1,0 +1,70 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'José Miranda — full-stack + AI products',
+  description = 'Full-stack developer construyendo productos con IA, desde la base de datos hasta el deploy en mi propia infraestructura.',
+} = Astro.props;
+
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="es" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <link rel="alternate" hreflang="es" href="/" />
+    <link rel="alternate" hreflang="en" href="/en/" />
+    <link rel="alternate" hreflang="x-default" href="/" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="mask-icon" href="/favicon.svg" color="#ea580c" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content="https://jmlabs.app" />
+    <meta property="og:image" content="https://jmlabs.app/og.svg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://jmlabs.app/og.svg" />
+
+    {/* Pre-paint theme + lang hydration — avoids flash of unstyled content */}
+    <script is:inline>
+      (() => {
+        try {
+          const prefs = JSON.parse(localStorage.getItem('jmlabs.prefs.v1')) || {};
+          const html = document.documentElement;
+          const prefersLight =
+            !prefs.theme &&
+            window.matchMedia('(prefers-color-scheme: light)').matches;
+          const theme = prefs.theme || (prefersLight ? 'light' : 'dark');
+          const lang = prefs.lang || 'es';
+          html.classList.toggle('dark', theme === 'dark');
+          html.classList.toggle('light', theme === 'light');
+          html.setAttribute('lang', lang);
+        } catch {}
+      })();
+    </script>
+
+    {/* Fonts: Fraunces (serif) + Geist (sans) + Geist Mono (monospace)
+        TODO: self-host via Fontsource for privacy + perf */}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..700,0..100;1,9..144,300..700,0..100&family=Geist:wght@300..700&family=Geist+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

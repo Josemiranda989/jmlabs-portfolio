@@ -83,9 +83,9 @@ import Layout from '../layouts/Layout.astro';
           </a>
         </div>
         <div class="hero-meta">
-          <span><strong data-i18n="es">Ubicación:</strong><strong data-i18n="en">Based in:</strong> Aguilares, Tucumán · AR</span>
-          <span><strong data-i18n="es">Actualmente:</strong><strong data-i18n="en">Currently:</strong> Pulpou · Digital House</span>
-          <span><strong>Stack:</strong> Next.js · Node · Gemini API · Cloudflare</span>
+          <span><span class="hm-label" data-i18n="es">Ubicación:</span><span class="hm-label" data-i18n="en">Based in:</span> Aguilares, Tucumán · AR</span>
+          <span><span class="hm-label" data-i18n="es">Actualmente:</span><span class="hm-label" data-i18n="en">Currently:</span> Pulpou · Digital House</span>
+          <span><span class="hm-label">Stack:</span> Next.js · Node · Gemini API · Cloudflare</span>
         </div>
       </div>
     </section>
@@ -712,7 +712,7 @@ import Layout from '../layouts/Layout.astro';
       if (e.key === 'Escape' && drawer?.getAttribute('aria-hidden') === 'false') closeDrawer();
     });
 
-    /* reveal-on-scroll */
+    /* reveal-on-scroll — scoped a projects + col-cards (menos sobrecarga visual) */
     const io = new IntersectionObserver((entries) => {
       entries.forEach((en) => {
         if (en.isIntersecting) {
@@ -721,7 +721,7 @@ import Layout from '../layouts/Layout.astro';
         }
       });
     }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.section, .project, .col-card, .contact-card').forEach((el) => {
+    document.querySelectorAll('.project, .col-card').forEach((el) => {
       el.classList.add('reveal');
       io.observe(el);
     });

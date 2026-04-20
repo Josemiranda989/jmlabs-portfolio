@@ -431,7 +431,7 @@ html.light .icon-moon { display: block; }
   font-size: 12px;
   color: var(--text-mute);
 }
-.hero-meta span strong { color: var(--text-dim); font-weight: 500; }
+.hero-meta .hm-label { color: var(--text-dim); font-weight: 500; margin-right: 2px; }
 
 /* ── projects ── */
 .project {
@@ -1029,11 +1029,12 @@ html.light .icon-moon { display: block; }
 .footer a { color: var(--text-dim); border-bottom: 1px dotted var(--hairline-2); padding-bottom: 1px; }
 .footer a:hover { color: var(--accent); border-color: var(--accent); }
 
-/* fade-ins */
+/* fade-ins — scoped solo a projects + col-cards para evitar sobrecarga visual
+   (sections y contact-cards ya estaban reveal pero era demasiado) */
 @media (prefers-reduced-motion: no-preference) {
   .reveal {
     opacity: 0; transform: translateY(16px);
-    transition: opacity 700ms var(--ease-out), transform 700ms var(--ease-out);
+    transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
   }
   .reveal.in { opacity: 1; transform: none; }
 }
@@ -1041,3 +1042,27 @@ html.light .icon-moon { display: block; }
 /* lang show/hide */
 html[lang="es"] [data-i18n="en"] { display: none; }
 html[lang="en"] [data-i18n="es"] { display: none; }
+
+/* print styles — clean layout for Ctrl+P */
+@media print {
+  :root {
+    --bg: white; --bg-elev: white; --surface: white; --surface-2: white;
+    --text: #111; --text-dim: #333; --text-mute: #666;
+    --accent: #c2410c; --accent-ink: white;
+    --hairline: #ddd; --hairline-2: #bbb;
+  }
+  html, body { background: white !important; color: #111 !important; }
+  .nav, .skip-link, #mobile-drawer, #drawer-backdrop,
+  .hero::before, .project::before,
+  .hero-ctas, .project-ctas { display: none !important; }
+  .hero { padding-top: 0; }
+  .section { padding-block: 24px; break-inside: avoid; }
+  .project, .col-card, .contact-card, .stack-col {
+    border: 1px solid #ccc !important;
+    background: white !important;
+    break-inside: avoid;
+  }
+  a { color: inherit; text-decoration: underline; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 10pt; color: #666; }
+  .mock, .ci-window, .diagram { break-inside: avoid; }
+}

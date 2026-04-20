@@ -605,9 +605,9 @@ import Layout from '../layouts/Layout.astro';
         </p>
 
         <div class="contact-grid">
-          <a class="contact-card" href="mailto:josemiranda989@gmail.com">
+          <a class="contact-card" href="mailto:" data-email-user="josemiranda989" data-email-domain="gmail.com">
             <span class="contact-k">Email</span>
-            <span class="contact-v">josemiranda989@gmail.com</span>
+            <span class="contact-v" data-email-text>josemiranda989 [at] gmail.com</span>
             <span class="contact-arrow">↗</span>
           </a>
           <a class="contact-card" href="https://linkedin.com/in/josemiranda989" target="_blank" rel="noopener">
@@ -710,6 +710,17 @@ import Layout from '../layouts/Layout.astro';
     drawer?.querySelectorAll('a').forEach((a) => a.addEventListener('click', closeDrawer));
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && drawer?.getAttribute('aria-hidden') === 'false') closeDrawer();
+    });
+
+    /* email un-obfuscation on load — protege de bots regex-based sin JS */
+    document.querySelectorAll<HTMLAnchorElement>('[data-email-user][data-email-domain]').forEach((el) => {
+      const user = el.dataset.emailUser;
+      const domain = el.dataset.emailDomain;
+      if (!user || !domain) return;
+      const email = `${user}@${domain}`;
+      el.href = `mailto:${email}`;
+      const text = el.querySelector<HTMLElement>('[data-email-text]');
+      if (text) text.textContent = email;
     });
 
     /* reveal-on-scroll — scoped a projects + col-cards (menos sobrecarga visual) */

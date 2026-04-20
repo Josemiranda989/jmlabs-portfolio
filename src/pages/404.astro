@@ -1,0 +1,64 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="404 — José Miranda"
+  description="This page doesn't exist on jmlabs.app."
+>
+  <main class="nf">
+    <div class="nf-topbar">
+      <a href="/" class="logo" aria-label="jmlabs home">jmlabs</a>
+      <button id="theme-btn" class="icon-btn" aria-label="Toggle theme">
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4a8.5 8.5 0 1 0 11.5 11.5z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </button>
+    </div>
+
+    <div class="nf-body">
+      <div class="nf-eyebrow">ERROR / 404</div>
+      <div class="nf-code" aria-hidden="true">
+        <span>4</span><span class="accent">0</span><span>4</span>
+      </div>
+      <h1 class="nf-title" data-i18n="es">Nada por acá.</h1>
+      <h1 class="nf-title" data-i18n="en">Nothing here.</h1>
+      <p class="nf-msg" data-i18n="es">
+        Esta URL no existe en <em>jmlabs.app</em>. Se habrá escapado por el tunnel de Cloudflare.
+      </p>
+      <p class="nf-msg" data-i18n="en">
+        This URL doesn't exist on <em>jmlabs.app</em>. Must've slipped out through the Cloudflare tunnel.
+      </p>
+      <a href="/" class="btn btn-primary">
+        <span data-i18n="es">Volver al inicio</span><span data-i18n="en">Back home</span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+
+    <footer class="nf-footer">
+      <span>© 2026 José Miranda</span>
+      <span>·</span>
+      <a href="https://linkedin.com/in/josemiranda989" target="_blank" rel="noopener">LinkedIn</a>
+    </footer>
+  </main>
+
+  <script>
+    const LS_KEY = 'jmlabs.prefs.v1';
+    const saved = (() => {
+      try { return JSON.parse(localStorage.getItem(LS_KEY) || '{}'); } catch { return {}; }
+    })();
+    const state = {
+      theme: saved.theme || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'),
+    };
+    function applyTheme(v: 'dark' | 'light') {
+      const html = document.documentElement;
+      html.classList.toggle('dark', v === 'dark');
+      html.classList.toggle('light', v === 'light');
+      state.theme = v;
+      try { localStorage.setItem(LS_KEY, JSON.stringify({ ...saved, theme: v })); } catch {}
+    }
+    applyTheme(state.theme as 'dark' | 'light');
+    document.getElementById('theme-btn')?.addEventListener('click', () => {
+      applyTheme(state.theme === 'dark' ? 'light' : 'dark');
+    });
+  </script>
+</Layout>

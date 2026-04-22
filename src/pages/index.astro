@@ -624,6 +624,39 @@ import Layout from '../layouts/Layout.astro';
       </div>
     </section>
 
+    {/* ─── BONUS · ARCADE TEASER ─── */}
+    <section id="bonus" class="section bonus">
+      <div class="container">
+        <a href="/arcade" class="bonus-card" aria-label="Play Homelab Tycoon arcade">
+          <div class="bonus-card-text">
+            <span class="bonus-eyebrow">PS · BONUS</span>
+            <h2 class="bonus-title">
+              <span data-i18n="es">Y para divertirme, armé un <em>mini-juego</em>.</span>
+              <span data-i18n="en">And just for fun, I built a <em>mini-game</em>.</span>
+            </h2>
+            <p class="bonus-blurb" data-i18n="es">
+              Drag &amp; drop de los services reales de mi homelab a un server con límites de RAM y CPU. Tres niveles, cero fricción.
+            </p>
+            <p class="bonus-blurb" data-i18n="en">
+              Drag &amp; drop my actual homelab services into a server with RAM and CPU limits. Three levels, zero friction.
+            </p>
+            <span class="bonus-cta">
+              <span data-i18n="es">Jugar Homelab Tycoon</span>
+              <span data-i18n="en">Play Homelab Tycoon</span>
+              <span class="arrow" aria-hidden="true">↗</span>
+            </span>
+          </div>
+          <div class="bonus-icons" aria-hidden="true">
+            <img src="/arcade/icons/pi-hole.svg" alt="" loading="lazy" />
+            <img src="/arcade/icons/jellyfin.svg" alt="" loading="lazy" />
+            <img src="/arcade/icons/immich.svg" alt="" loading="lazy" />
+            <img src="/arcade/icons/nextcloud.svg" alt="" loading="lazy" />
+            <img src="/arcade/icons/grafana.svg" alt="" loading="lazy" />
+          </div>
+        </a>
+      </div>
+    </section>
+
     {/* ─── TOC sidebar (desktop only ≥1280px) ─── */}
     <aside class="toc" aria-label="Page progress">
       <a href="#projects" class="toc-dot" data-label-es="Proyectos" data-label-en="Work"></a>

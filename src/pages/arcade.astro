@@ -1,0 +1,943 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+type Service = {
+  id: string;
+  name: string;
+  blurbEs: string;
+  blurbEn: string;
+  ram: number;
+  cpu: number;
+  icon: string; // dashboard-icons name, e.g. 'pi-hole'
+  dependsOn?: string[];
+};
+
+type Level = {
+  n: number;
+  titleEs: string;
+  titleEn: string;
+  goalEs: string;
+  goalEn: string;
+  required: string[];
+  limits: { ram: number; cpu: number };
+  catalog: string[];
+};
+
+const SERVICES: Service[] = [
+  { id: 'pihole',     name: 'Pi-hole',        icon: 'pi-hole',        blurbEs: 'DNS adblocker de red',         blurbEn: 'Network-wide DNS adblocker',  ram: 0.5, cpu: 0.5 },
+  { id: 'postgres',   name: 'Postgres',       icon: 'postgres',       blurbEs: 'Base de datos relacional',     blurbEn: 'Relational database',         ram: 1,   cpu: 0.5 },
+  { id: 'cftunnel',   name: 'CF Tunnel',      icon: 'cloudflare',     blurbEs: 'Ingress sin puertos abiertos', blurbEn: 'Zero-port ingress',           ram: 0.5, cpu: 0.5 },
+  { id: 'grafana',    name: 'Grafana',        icon: 'grafana',        blurbEs: 'Dashboards de observabilidad', blurbEn: 'Observability dashboards',    ram: 1,   cpu: 0.5 },
+  { id: 'homeassist', name: 'Home Assistant', icon: 'home-assistant', blurbEs: 'Automatización del hogar',     blurbEn: 'Home automation',             ram: 1.5, cpu: 1   },
+  { id: 'immich',     name: 'Immich',         icon: 'immich',         blurbEs: 'Backup de fotos self-hosted',  blurbEn: 'Self-hosted photo backup',    ram: 2,   cpu: 1, dependsOn: ['postgres'] },
+  { id: 'nextcloud',  name: 'Nextcloud',      icon: 'nextcloud',      blurbEs: 'Archivos y docs self-hosted',  blurbEn: 'Self-hosted files & docs',    ram: 3,   cpu: 1, dependsOn: ['postgres'] },
+  { id: 'jellyfin',   name: 'Jellyfin',       icon: 'jellyfin',       blurbEs: 'Media server personal',        blurbEn: 'Personal media server',       ram: 4,   cpu: 2 },
+];
+
+const LEVELS: Level[] = [
+  {
+    n: 1,
+    titleEs: 'First Boot',
+    titleEn: 'First Boot',
+    goalEs: 'Deployá Pi-hole en el servidor.',
+    goalEn: 'Deploy Pi-hole to the server.',
+    required: ['pihole'],
+    limits: { ram: 2, cpu: 2 },
+    catalog: ['pihole', 'jellyfin', 'nextcloud', 'immich'],
+  },
+  {
+    n: 2,
+    titleEs: 'Media Night',
+    titleEn: 'Media Night',
+    goalEs: 'Deployá Jellyfin + Immich. Ojo: Immich necesita su base de datos.',
+    goalEn: 'Deploy Jellyfin + Immich. Heads up: Immich needs its database.',
+    required: ['jellyfin', 'immich'],
+    limits: { ram: 8, cpu: 5 },
+    catalog: ['pihole', 'postgres', 'homeassist', 'immich', 'nextcloud', 'jellyfin'],
+  },
+  {
+    n: 3,
+    titleEs: 'The Full Stack',
+    titleEn: 'The Full Stack',
+    goalEs: 'Meté los 8 servicios sin explotar el servidor.',
+    goalEn: 'Fit all 8 services without blowing up the server.',
+    required: SERVICES.map(s => s.id),
+    limits: { ram: 14, cpu: 7 },
+    catalog: SERVICES.map(s => s.id),
+  },
+];
+
+const gameData = { services: SERVICES, levels: LEVELS };
+---
+
+<Layout
+  title="Arcade — Homelab Tycoon · José Miranda"
+  description="Mini-juego de navegador: armá un homelab sin que explote el servidor. Drag & drop de services reales (Immich, Jellyfin, Pi-hole, Postgres) con límites de RAM y CPU."
+>
+  <a href="#game" class="skip-link" data-i18n="es">Saltar al juego</a>
+  <a href="#game" class="skip-link" data-i18n="en">Skip to game</a>
+
+  <main class="arc">
+    {/* ─── TOP BAR ─── */}
+    <header class="arc-top">
+      <a href="/" class="logo" aria-label="jmlabs home">jmlabs</a>
+      <div class="arc-title">
+        <span class="eyebrow" data-i18n="es">Arcade</span>
+        <span class="eyebrow" data-i18n="en">Arcade</span>
+        <span class="sep" aria-hidden="true">·</span>
+        <span data-i18n="es">Homelab Tycoon</span>
+        <span data-i18n="en">Homelab Tycoon</span>
+      </div>
+      <div class="arc-controls">
+        <div class="chip-toggle" role="tablist" aria-label="Language">
+          <button id="lang-es" aria-pressed="true">ES</button>
+          <button id="lang-en" aria-pressed="false">EN</button>
+        </div>
+        <button id="theme-btn" class="icon-btn" aria-label="Toggle theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4a8.5 8.5 0 1 0 11.5 11.5z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        </button>
+      </div>
+    </header>
+
+    {/* ─── MOBILE WARNING ─── */}
+    <aside class="arc-mobile-warn" role="note">
+      <strong data-i18n="es">Arcade en mobile todavía no.</strong>
+      <strong data-i18n="en">Arcade not ready on mobile yet.</strong>
+      <span data-i18n="es">El drag &amp; drop necesita un puntero. Abrilo en desktop.</span>
+      <span data-i18n="en">Drag &amp; drop needs a pointer. Open on desktop.</span>
+      <a href="/" class="btn btn-ghost">
+        <span data-i18n="es">Volver al portfolio</span><span data-i18n="en">Back to portfolio</span>
+      </a>
+    </aside>
+
+    {/* ─── LEVEL HEADER ─── */}
+    <section class="arc-level" id="game" aria-live="polite">
+      <div class="arc-level-meta">
+        <span class="num" id="lvl-num">01</span>
+        <span class="sep" aria-hidden="true">/</span>
+        <span class="num-total">03</span>
+      </div>
+      <h1 class="arc-level-title">
+        <em id="lvl-title-es" data-i18n="es"></em>
+        <em id="lvl-title-en" data-i18n="en"></em>
+      </h1>
+      <p class="arc-goal" id="lvl-goal-es" data-i18n="es"></p>
+      <p class="arc-goal" id="lvl-goal-en" data-i18n="en"></p>
+    </section>
+
+    {/* ─── GAME BOARD ─── */}
+    <section class="arc-board" aria-label="Game board">
+      {/* CATALOG */}
+      <div class="arc-catalog" aria-label="Available services">
+        <h2 class="arc-h">
+          <span data-i18n="es">Catálogo</span>
+          <span data-i18n="en">Catalog</span>
+        </h2>
+        <div class="arc-catalog-list" id="catalog"></div>
+      </div>
+
+      {/* SERVER */}
+      <div class="arc-server">
+        <h2 class="arc-h">
+          <span data-i18n="es">Servidor</span>
+          <span data-i18n="en">Server</span>
+        </h2>
+
+        <div class="arc-meters" aria-live="polite">
+          <div class="arc-meter">
+            <div class="arc-meter-label">
+              <span>RAM</span>
+              <span class="mono" id="m-ram-txt">0 / 0 GB</span>
+            </div>
+            <div class="arc-meter-track"><div class="arc-meter-fill" id="m-ram-fill"></div></div>
+          </div>
+          <div class="arc-meter">
+            <div class="arc-meter-label">
+              <span>CPU</span>
+              <span class="mono" id="m-cpu-txt">0 / 0 cores</span>
+            </div>
+            <div class="arc-meter-track"><div class="arc-meter-fill" id="m-cpu-fill"></div></div>
+          </div>
+        </div>
+
+        <div class="arc-dropzone" id="dropzone" aria-label="Drop services here">
+          <div class="arc-dropzone-empty">
+            <span data-i18n="es">Arrastrá services acá</span>
+            <span data-i18n="en">Drag services here</span>
+          </div>
+          <div class="arc-deployed" id="deployed"></div>
+        </div>
+
+        <div class="arc-status" id="status" role="status"></div>
+
+        <div class="arc-actions">
+          <button class="btn btn-ghost" id="btn-reset">
+            <span data-i18n="es">Reset</span>
+            <span data-i18n="en">Reset</span>
+          </button>
+          <button class="btn btn-primary" id="btn-next" disabled>
+            <span data-i18n="es">Siguiente nivel</span>
+            <span data-i18n="en">Next level</span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <footer class="arc-foot">
+      <a href="/" class="arc-foot-back">← <span data-i18n="es">Volver al portfolio</span><span data-i18n="en">Back to portfolio</span></a>
+      <span class="mono arc-foot-meta">jmlabs.app / arcade / v0.1</span>
+    </footer>
+  </main>
+
+  <script is:inline define:vars={{ gameData }}>
+    // @ts-ignore — runtime global for the client module below
+    window.__ARCADE__ = gameData;
+  </script>
+
+  <script>
+    // ─── TYPES ─────────────────────────────────────────────────
+    type Service = {
+      id: string; name: string;
+      blurbEs: string; blurbEn: string;
+      ram: number; cpu: number;
+      icon: string;
+      dependsOn?: string[];
+    };
+    type Level = {
+      n: number; titleEs: string; titleEn: string;
+      goalEs: string; goalEn: string;
+      required: string[];
+      limits: { ram: number; cpu: number };
+      catalog: string[];
+    };
+    type Lang = 'es' | 'en';
+    type Theme = 'dark' | 'light';
+    type Status = 'playing' | 'won' | 'lost';
+
+    const data = (window as any).__ARCADE__ as { services: Service[]; levels: Level[] };
+    const serviceById = new Map<string, Service>(data.services.map(s => [s.id, s]));
+
+    // ─── PREFS (theme + lang) — reuse jmlabs.prefs.v1 ────────
+    const LS_KEY = 'jmlabs.prefs.v1';
+    type Prefs = { theme?: Theme; lang?: Lang };
+    const saved: Prefs = (() => {
+      try { return JSON.parse(localStorage.getItem(LS_KEY) || '{}'); } catch { return {}; }
+    })();
+
+    const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+    let theme: Theme = saved.theme || (prefersLight ? 'light' : 'dark');
+    let lang: Lang = saved.lang || 'es';
+
+    function persistPrefs() {
+      try { localStorage.setItem(LS_KEY, JSON.stringify({ ...saved, theme, lang })); } catch {}
+    }
+
+    function applyTheme(v: Theme) {
+      theme = v;
+      const html = document.documentElement;
+      html.classList.toggle('dark', v === 'dark');
+      html.classList.toggle('light', v === 'light');
+      persistPrefs();
+    }
+
+    function applyLang(v: Lang) {
+      lang = v;
+      document.documentElement.setAttribute('lang', v);
+      document.querySelectorAll<HTMLElement>('[data-i18n]').forEach(el => {
+        const match = el.getAttribute('data-i18n') === v;
+        el.style.display = match ? '' : 'none';
+      });
+      document.getElementById('lang-es')?.setAttribute('aria-pressed', String(v === 'es'));
+      document.getElementById('lang-en')?.setAttribute('aria-pressed', String(v === 'en'));
+      persistPrefs();
+    }
+
+    // ─── GAME STATE ──────────────────────────────────────────
+    const state = {
+      levelIdx: 0,
+      deployed: new Set<string>(),
+      status: 'playing' as Status,
+      lossReason: '' as string,
+    };
+
+    const currentLevel = () => data.levels[state.levelIdx]!;
+
+    function usedResources() {
+      let ram = 0, cpu = 0;
+      for (const id of state.deployed) {
+        const s = serviceById.get(id)!;
+        ram += s.ram; cpu += s.cpu;
+      }
+      return { ram: +ram.toFixed(1), cpu: +cpu.toFixed(1) };
+    }
+
+    function missingDeps(): string[] {
+      const missing = new Set<string>();
+      for (const id of state.deployed) {
+        const s = serviceById.get(id)!;
+        for (const dep of s.dependsOn ?? []) {
+          if (!state.deployed.has(dep)) missing.add(dep);
+        }
+      }
+      return [...missing];
+    }
+
+    function checkWinLose() {
+      const { ram, cpu } = usedResources();
+      const { ram: limR, cpu: limC } = currentLevel().limits;
+
+      if (ram > limR || cpu > limC) {
+        state.status = 'lost';
+        state.lossReason = 'overflow';
+        return;
+      }
+
+      const missing = missingDeps();
+      if (missing.length > 0) {
+        state.status = 'playing';
+        state.lossReason = '';
+        return;
+      }
+
+      const allRequired = currentLevel().required.every(id => state.deployed.has(id));
+      if (allRequired) {
+        state.status = 'won';
+        state.lossReason = '';
+        return;
+      }
+
+      state.status = 'playing';
+      state.lossReason = '';
+    }
+
+    // ─── RENDER ──────────────────────────────────────────────
+    const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
+
+    function renderLevel() {
+      const lv = currentLevel();
+      $('lvl-num').textContent = String(lv.n).padStart(2, '0');
+      $('lvl-title-es').textContent = lv.titleEs;
+      $('lvl-title-en').textContent = lv.titleEn;
+      $('lvl-goal-es').textContent = lv.goalEs;
+      $('lvl-goal-en').textContent = lv.goalEn;
+      renderCatalog();
+      renderDeployed();
+      renderMeters();
+      renderStatus();
+    }
+
+    const ICON_BASE = '/arcade/icons';
+
+    function serviceCardHTML(s: Service, opts: { deployed: boolean }): string {
+      const blurb = lang === 'es' ? s.blurbEs : s.blurbEn;
+      const deps = s.dependsOn?.length
+        ? `<span class="svc-deps mono">needs: ${s.dependsOn.map(d => serviceById.get(d)!.name).join(', ')}</span>`
+        : '';
+      return `
+        <article class="svc ${opts.deployed ? 'is-deployed' : ''}"
+                 draggable="${opts.deployed ? 'false' : 'true'}"
+                 data-id="${s.id}"
+                 aria-label="${s.name}">
+          <img class="svc-icon" src="${ICON_BASE}/${s.icon}.svg" alt="" loading="lazy" decoding="async" onerror="this.style.visibility='hidden'" />
+          <div class="svc-body">
+            <header class="svc-head">
+              <span class="svc-name">${s.name}</span>
+              <span class="svc-cost mono">${s.ram} GB · ${s.cpu} CPU</span>
+            </header>
+            <p class="svc-blurb">${blurb}</p>
+            ${deps}
+          </div>
+        </article>
+      `;
+    }
+
+    function renderCatalog() {
+      const list = $('catalog');
+      const lv = currentLevel();
+      list.innerHTML = lv.catalog
+        .map(id => serviceCardHTML(serviceById.get(id)!, { deployed: state.deployed.has(id) }))
+        .join('');
+      list.querySelectorAll<HTMLElement>('.svc').forEach(el => {
+        el.addEventListener('dragstart', onDragStart);
+        el.addEventListener('dragend', onDragEnd);
+      });
+    }
+
+    function renderDeployed() {
+      const list = $('deployed');
+      const ids = [...state.deployed];
+      list.innerHTML = ids
+        .map(id => serviceCardHTML(serviceById.get(id)!, { deployed: true }))
+        .join('');
+      list.querySelectorAll<HTMLElement>('.svc').forEach(el => {
+        el.addEventListener('click', () => {
+          const id = el.dataset.id!;
+          undeploy(id);
+        });
+        el.setAttribute('title', lang === 'es' ? 'Click para quitar' : 'Click to remove');
+      });
+      $('dropzone').classList.toggle('has-items', ids.length > 0);
+    }
+
+    function renderMeters() {
+      const { ram, cpu } = usedResources();
+      const { ram: limR, cpu: limC } = currentLevel().limits;
+      $('m-ram-txt').textContent = `${ram} / ${limR} GB`;
+      $('m-cpu-txt').textContent = `${cpu} / ${limC} cores`;
+
+      const pr = Math.min(100, (ram / limR) * 100);
+      const pc = Math.min(100, (cpu / limC) * 100);
+      const ramFill = $('m-ram-fill');
+      const cpuFill = $('m-cpu-fill');
+      ramFill.style.width = `${pr}%`;
+      cpuFill.style.width = `${pc}%`;
+      ramFill.classList.toggle('is-over', ram > limR);
+      cpuFill.classList.toggle('is-over', cpu > limC);
+    }
+
+    function renderStatus() {
+      const el = $('status');
+      const btnNext = $('btn-next') as HTMLButtonElement;
+      el.className = 'arc-status';
+
+      const missing = missingDeps();
+
+      if (state.status === 'won') {
+        const nextExists = state.levelIdx + 1 < data.levels.length;
+        const msg = lang === 'es'
+          ? (nextExists ? 'Servidor estable. ¡Nivel completado!' : 'Full stack deployado. Sos el arquitecto.')
+          : (nextExists ? 'Server stable. Level complete!' : 'Full stack deployed. You are the architect.');
+        el.textContent = msg;
+        el.classList.add('is-won');
+        btnNext.disabled = !nextExists;
+        const label = lang === 'es'
+          ? (nextExists ? 'Siguiente nivel' : 'Fin del arcade')
+          : (nextExists ? 'Next level' : 'End of arcade');
+        btnNext.textContent = label + ' ';
+        const arrow = document.createElement('span');
+        arrow.className = 'arrow';
+        arrow.textContent = nextExists ? '→' : '·';
+        btnNext.appendChild(arrow);
+        return;
+      }
+
+      if (state.status === 'lost') {
+        el.textContent = lang === 'es'
+          ? 'El servidor explotó. Te pasaste del límite de recursos.'
+          : 'The server blew up. You exceeded the resource limits.';
+        el.classList.add('is-lost');
+        btnNext.disabled = true;
+        return;
+      }
+
+      if (missing.length > 0) {
+        const names = missing.map(id => serviceById.get(id)!.name).join(', ');
+        el.textContent = lang === 'es'
+          ? `Falta una dependencia: ${names}.`
+          : `Missing dependency: ${names}.`;
+        el.classList.add('is-warn');
+        btnNext.disabled = true;
+        return;
+      }
+
+      el.textContent = lang === 'es'
+        ? 'Cumplí el objetivo sin romper el servidor.'
+        : 'Hit the goal without breaking the server.';
+      btnNext.disabled = true;
+    }
+
+    // ─── ACTIONS ─────────────────────────────────────────────
+    function deploy(id: string) {
+      if (state.deployed.has(id)) return;
+      state.deployed.add(id);
+      checkWinLose();
+      renderCatalog();
+      renderDeployed();
+      renderMeters();
+      renderStatus();
+    }
+
+    function undeploy(id: string) {
+      if (!state.deployed.has(id)) return;
+      state.deployed.delete(id);
+      checkWinLose();
+      renderCatalog();
+      renderDeployed();
+      renderMeters();
+      renderStatus();
+    }
+
+    function reset() {
+      state.deployed.clear();
+      state.status = 'playing';
+      state.lossReason = '';
+      renderLevel();
+    }
+
+    function nextLevel() {
+      if (state.levelIdx + 1 >= data.levels.length) return;
+      state.levelIdx += 1;
+      reset();
+    }
+
+    // ─── DRAG & DROP ─────────────────────────────────────────
+    function onDragStart(e: DragEvent) {
+      const el = e.currentTarget as HTMLElement;
+      const id = el.dataset.id!;
+      if (state.deployed.has(id)) { e.preventDefault(); return; }
+      e.dataTransfer?.setData('text/plain', id);
+      e.dataTransfer!.effectAllowed = 'copy';
+      el.classList.add('is-dragging');
+    }
+
+    function onDragEnd(e: DragEvent) {
+      (e.currentTarget as HTMLElement).classList.remove('is-dragging');
+    }
+
+    const dropzone = $('dropzone');
+    dropzone.addEventListener('dragover', e => {
+      e.preventDefault();
+      if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+      dropzone.classList.add('is-over');
+    });
+    dropzone.addEventListener('dragleave', e => {
+      if (e.target === dropzone) dropzone.classList.remove('is-over');
+    });
+    dropzone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropzone.classList.remove('is-over');
+      const id = e.dataTransfer?.getData('text/plain');
+      if (id) deploy(id);
+    });
+
+    // ─── BOOTSTRAP & WIRING ─────────────────────────────────
+    // IMPORTANT: do this AFTER all consts/functions are declared,
+    // otherwise applyLang → renderLevel → currentLevel hits TDZ.
+    applyTheme(theme);
+    applyLang(lang);
+
+    document.getElementById('theme-btn')?.addEventListener('click', () => {
+      applyTheme(theme === 'dark' ? 'light' : 'dark');
+    });
+    document.getElementById('lang-es')?.addEventListener('click', () => {
+      applyLang('es');
+      renderLevel();
+    });
+    document.getElementById('lang-en')?.addEventListener('click', () => {
+      applyLang('en');
+      renderLevel();
+    });
+
+    $('btn-reset').addEventListener('click', reset);
+    $('btn-next').addEventListener('click', nextLevel);
+
+    renderLevel();
+  </script>
+
+  <style>
+    /* ─── ARCADE LAYOUT ─────────────────────────────────────── */
+    .arc {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: var(--s-5) var(--s-5) var(--s-7);
+      gap: var(--s-6);
+      max-width: var(--container);
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .arc-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s-4);
+      padding-bottom: var(--s-4);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .arc-top .logo {
+      font-family: var(--ff-serif);
+      font-weight: 600;
+      font-style: italic;
+      font-size: 20px;
+      letter-spacing: -0.01em;
+    }
+    .arc-title {
+      display: flex;
+      align-items: baseline;
+      gap: var(--s-2);
+      font-family: var(--ff-mono);
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+    .arc-title .eyebrow {
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .arc-title .sep { color: var(--hairline-2); }
+    .arc-controls { display: flex; align-items: center; gap: var(--s-3); }
+
+    .chip-toggle {
+      display: inline-flex;
+      border: 1px solid var(--hairline);
+      border-radius: var(--r-1);
+      overflow: hidden;
+      font-family: var(--ff-mono);
+      font-size: 12px;
+    }
+    .chip-toggle button {
+      padding: 6px 10px;
+      color: var(--text-mute);
+      background: transparent;
+      transition: color var(--dur) var(--ease-out), background var(--dur) var(--ease-out);
+    }
+    .chip-toggle button[aria-pressed="true"] {
+      background: var(--accent);
+      color: var(--accent-ink);
+    }
+    .icon-btn {
+      width: 36px; height: 36px;
+      border: 1px solid var(--hairline);
+      border-radius: var(--r-1);
+      color: var(--text-dim);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-btn:hover { color: var(--accent); border-color: var(--accent); }
+    .icon-btn svg { width: 16px; height: 16px; }
+    html.dark .icon-btn .icon-sun { display: none; }
+    html.light .icon-btn .icon-moon { display: none; }
+
+    /* ─── MOBILE WARNING ────────────────────────────────────── */
+    .arc-mobile-warn {
+      display: none;
+      flex-direction: column;
+      gap: var(--s-3);
+      padding: var(--s-5);
+      border: 1px dashed var(--hairline-2);
+      border-radius: var(--r-3);
+      background: var(--surface);
+      font-family: var(--ff-sans);
+    }
+    .arc-mobile-warn strong { color: var(--accent); font-family: var(--ff-serif); font-style: italic; font-size: 20px; font-weight: 500; }
+    .arc-mobile-warn span { color: var(--text-dim); font-size: 14px; }
+    .arc-mobile-warn .btn { align-self: flex-start; margin-top: var(--s-2); }
+
+    /* ─── LEVEL HEADER ──────────────────────────────────────── */
+    .arc-level-meta {
+      font-family: var(--ff-mono);
+      font-size: 12px;
+      color: var(--text-mute);
+      letter-spacing: 0.08em;
+    }
+    .arc-level-meta .num { color: var(--accent); }
+    .arc-level-meta .sep { margin: 0 var(--s-2); }
+    .arc-level-title {
+      margin: var(--s-2) 0 var(--s-3);
+      font-family: var(--ff-serif);
+      font-weight: 400;
+      font-size: clamp(32px, 4vw, 56px);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+    .arc-level-title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .arc-goal {
+      font-family: var(--ff-sans);
+      font-size: 16px;
+      color: var(--text-dim);
+      max-width: var(--reading);
+      margin: 0;
+    }
+
+    /* ─── BOARD ─────────────────────────────────────────────── */
+    .arc-board {
+      display: grid;
+      grid-template-columns: minmax(280px, 340px) 1fr;
+      gap: var(--s-5);
+      align-items: start;
+    }
+    .arc-h {
+      font-family: var(--ff-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-mute);
+      margin: 0 0 var(--s-3);
+    }
+
+    /* ─── CATALOG ───────────────────────────────────────────── */
+    .arc-catalog-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-2);
+    }
+
+    /* ─── SERVICE CARD styles live in a separate is:global block below ───
+       (Cards are injected via innerHTML by the client script, so Astro's
+        scoping attribute never lands on them — global rules required.) */
+
+    /* ─── SERVER ────────────────────────────────────────────── */
+    .arc-server {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-4);
+      padding: var(--s-5);
+      background: var(--bg-elev);
+      border: 1px solid var(--hairline);
+      border-radius: var(--r-3);
+    }
+
+    .arc-meters {
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-3);
+    }
+    .arc-meter-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-family: var(--ff-mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-bottom: 4px;
+    }
+    .arc-meter-label .mono { color: var(--text); }
+    .arc-meter-track {
+      height: 8px;
+      background: var(--surface);
+      border: 1px solid var(--hairline);
+      border-radius: var(--r-1);
+      overflow: hidden;
+    }
+    .arc-meter-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      transition: width var(--dur) var(--ease-out), background var(--dur) var(--ease-out);
+    }
+    .arc-meter-fill.is-over {
+      background: #dc2626; /* deliberate red — matches CoachIA palette in portfolio */
+    }
+
+    /* ─── DROPZONE ──────────────────────────────────────────── */
+    .arc-dropzone {
+      position: relative;
+      min-height: 220px;
+      border: 1.5px dashed var(--hairline-2);
+      border-radius: var(--r-2);
+      padding: var(--s-4);
+      transition: border-color var(--dur) var(--ease-out),
+                  background var(--dur) var(--ease-out);
+    }
+    .arc-dropzone.is-over {
+      border-color: var(--accent);
+      background: var(--accent-glow);
+    }
+    .arc-dropzone.has-items .arc-dropzone-empty { display: none; }
+    .arc-dropzone-empty {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-mute);
+      font-family: var(--ff-mono);
+      font-size: 13px;
+      pointer-events: none;
+    }
+    .arc-deployed {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--s-2);
+    }
+
+    /* ─── STATUS ────────────────────────────────────────────── */
+    .arc-status {
+      min-height: 24px;
+      font-family: var(--ff-mono);
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+    .arc-status.is-won {
+      color: #10b981;
+    }
+    .arc-status.is-lost {
+      color: #dc2626;
+      animation: shake 400ms var(--ease-out);
+    }
+    .arc-status.is-warn { color: var(--accent); }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-4px); }
+      40% { transform: translateX(4px); }
+      60% { transform: translateX(-2px); }
+      80% { transform: translateX(2px); }
+    }
+
+    /* ─── ACTIONS ───────────────────────────────────────────── */
+    .arc-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--s-3);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--s-2);
+      padding: 10px 16px;
+      border-radius: var(--r-1);
+      font-family: var(--ff-sans);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1;
+      transition: transform var(--dur) var(--ease-out),
+                  background var(--dur) var(--ease-out),
+                  color var(--dur) var(--ease-out),
+                  border-color var(--dur) var(--ease-out),
+                  opacity var(--dur) var(--ease-out);
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--accent-ink);
+    }
+    .btn-primary:hover:not(:disabled) { transform: translateY(-1px); }
+    .btn-primary:disabled {
+      background: var(--surface);
+      color: var(--text-mute);
+      border: 1px solid var(--hairline);
+      cursor: not-allowed;
+    }
+    .btn-ghost {
+      color: var(--text-dim);
+      border: 1px solid var(--hairline);
+    }
+    .btn-ghost:hover { color: var(--accent); border-color: var(--accent); }
+    .btn .arrow { transition: transform var(--dur) var(--ease-out); }
+    .btn:hover:not(:disabled) .arrow { transform: translateX(2px); }
+
+    /* ─── FOOTER ────────────────────────────────────────────── */
+    .arc-foot {
+      margin-top: auto;
+      padding-top: var(--s-5);
+      border-top: 1px solid var(--hairline);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+    }
+    .arc-foot-back { color: var(--text-dim); }
+    .arc-foot-back:hover { color: var(--accent); }
+    .arc-foot-meta { color: var(--text-mute); font-size: 11px; }
+
+    .mono { font-family: var(--ff-mono); }
+
+    /* ─── MOBILE ────────────────────────────────────────────── */
+    @media (max-width: 860px) {
+      .arc-board,
+      .arc-level,
+      .arc-top,
+      .arc-foot {
+        display: none;
+      }
+      .arc-mobile-warn {
+        display: flex;
+      }
+    }
+  </style>
+
+  <style is:global>
+    /* ─── SERVICE CARD (global because client-injected via innerHTML) ─── */
+    .svc {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--s-3);
+      background: var(--surface);
+      border: 1px solid var(--hairline);
+      border-radius: var(--r-2);
+      padding: var(--s-3) var(--s-4);
+      cursor: grab;
+      transition: border-color var(--dur) var(--ease-out),
+                  transform var(--dur) var(--ease-out),
+                  background var(--dur) var(--ease-out),
+                  opacity var(--dur) var(--ease-out);
+      user-select: none;
+    }
+    .svc:hover { border-color: var(--accent); transform: translateY(-1px); }
+    .svc.is-dragging { opacity: 0.4; cursor: grabbing; }
+    .svc.is-deployed {
+      opacity: 0.35;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    /* in the deployed zone, cards become clickable to remove */
+    .arc-deployed .svc {
+      opacity: 1;
+      cursor: pointer;
+      pointer-events: auto;
+      background: var(--surface-2);
+      border-color: var(--hairline-2);
+    }
+    .arc-deployed .svc:hover { border-color: var(--accent); background: var(--surface); }
+
+    .svc-icon {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      padding: 4px;
+      background: var(--bg);
+      border: 1px solid var(--hairline);
+      border-radius: var(--r-1);
+      object-fit: contain;
+    }
+    html.light .svc-icon {
+      background: var(--surface-2);
+    }
+
+    .svc-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .svc-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: var(--s-3);
+      margin-bottom: 2px;
+    }
+    .svc-name {
+      font-family: var(--ff-serif);
+      font-weight: 500;
+      font-size: 17px;
+      letter-spacing: -0.01em;
+      color: var(--accent);
+    }
+    .svc-cost {
+      font-size: 11px;
+      color: var(--text-dim);
+      white-space: nowrap;
+    }
+    .svc-blurb {
+      margin: 0;
+      font-size: 12px;
+      color: var(--text-mute);
+      line-height: 1.4;
+    }
+    .svc-deps {
+      display: inline-block;
+      margin-top: var(--s-2);
+      font-size: 11px;
+      color: var(--text-mute);
+      padding: 2px 6px;
+      border: 1px dashed var(--hairline-2);
+      border-radius: var(--r-1);
+    }
+  </style>
+</Layout>

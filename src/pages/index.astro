@@ -351,6 +351,141 @@ import Layout from '../layouts/Layout.astro';
               </svg>
             </div>
           </article>
+
+          {/* Print All */}
+          <article class="project">
+            <div class="project-body">
+              <span class="project-num">03 — printall.jmlabs.app</span>
+              <h3>Print All</h3>
+              <p class="project-tagline" data-i18n="es">
+                E-commerce catalog para studio de impresión 3D — admin custom server-side, sin platform nativa.
+              </p>
+              <p class="project-tagline" data-i18n="en">
+                E-commerce catalog for a 3D printing studio — custom server-side admin, no native platform.
+              </p>
+              <p class="project-problem" data-i18n="es">
+                "El admin nativo de PocketBase sirve para devs pero no para uso diario. Construí uno propio con Astro SSR: imágenes con drag-and-drop, atributos key/value editables, search server-side con paginación, auth httpOnly. Catálogo público con OG dinámicas (satori), JSON-LD schema.org/Product, srcset responsive con CDN."
+              </p>
+              <p class="project-problem" data-i18n="en">
+                "PocketBase's native admin works for devs but not for daily use. Built a custom one with Astro SSR: drag-and-drop images, editable key/value attributes, server-side search with pagination, httpOnly auth. Public catalog with dynamic OG (satori), JSON-LD schema.org/Product, responsive srcset with CDN."
+              </p>
+
+              <div class="metrics">
+                <div class="metric"><div class="mv"><span>260</span></div><div class="ml" data-i18n="es">tests TDD passing</div><div class="ml" data-i18n="en">passing TDD tests</div></div>
+                <div class="metric"><div class="mv"><span>100</span></div><div class="ml" data-i18n="es">Lighthouse mobile</div><div class="ml" data-i18n="en">Lighthouse mobile</div></div>
+                <div class="metric"><div class="mv"><span>9</span></div><div class="ml" data-i18n="es">sprints en producción</div><div class="ml" data-i18n="en">sprints in production</div></div>
+                <div class="metric"><div class="mv"><span>0</span></div><div class="ml" data-i18n="es">errores en astro check</div><div class="ml" data-i18n="en">astro check errors</div></div>
+                <div class="metric"><div class="mv"><span>10</span></div><div class="ml" data-i18n="es">commits del ciclo</div><div class="ml" data-i18n="en">commits in the cycle</div></div>
+              </div>
+
+              <div class="project-chips">
+                <span class="chip" style="color:var(--accent); border-color: color-mix(in oklab, var(--accent) 40%, var(--hairline))">Astro 5</span>
+                <span class="chip">TypeScript</span>
+                <span class="chip">PocketBase</span>
+                <span class="chip">Tailwind v4</span>
+                <span class="chip">Vitest</span>
+                <span class="chip">SortableJS</span>
+                <span class="chip">Satori</span>
+                <span class="chip">Cloudflare Tunnel</span>
+                <span class="chip">Cloudflare Image Resizing</span>
+                <span class="chip">Docker</span>
+              </div>
+
+              <ul class="project-hl">
+                <li data-i18n="es">Admin custom completo: imágenes drag-and-drop, atributos editables, reorder de categorías, search + filter + paginación — todo Astro SSR vanilla, sin framework UI.</li>
+                <li data-i18n="en">Full custom admin: drag-and-drop images, editable attributes, category reorder, search + filter + pagination — all vanilla Astro SSR, no UI framework.</li>
+                <li data-i18n="es">Endpoints API <code>/admin/api/...</code> que proxean PocketBase manteniendo cookie httpOnly server-side — zero token leak al cliente.</li>
+                <li data-i18n="en">API endpoints <code>/admin/api/...</code> that proxy PocketBase keeping the httpOnly cookie server-side — zero token leak to the client.</li>
+                <li data-i18n="es">Catálogo público: OG image dinámica por producto (satori + @resvg), JSON-LD con HTML entities decodificadas, srcset/sizes responsive vía Cloudflare Image Resizing.</li>
+                <li data-i18n="en">Public catalog: dynamic OG image per product (satori + @resvg), JSON-LD with decoded HTML entities, responsive srcset/sizes via Cloudflare Image Resizing.</li>
+                <li data-i18n="es">Tooling propio: script CLI para batch-load de productos via JSON, con auth multi-source (macOS Keychain · <code>.env.local</code> · env vars).</li>
+                <li data-i18n="en">Custom tooling: CLI script for product batch-load via JSON, with multi-source auth (macOS Keychain · <code>.env.local</code> · env vars).</li>
+              </ul>
+
+              <div class="project-ctas">
+                <a href="https://printall.jmlabs.app" target="_blank" rel="noopener" class="btn btn-primary">
+                  <span data-i18n="es">Ver demo live</span><span data-i18n="en">See live demo</span>
+                  <span class="arrow">↗</span>
+                </a>
+                <a href="https://github.com/Josemiranda989/printall" target="_blank" rel="noopener" class="btn btn-ghost">
+                  <span data-i18n="es">Ver código</span><span data-i18n="en">View code</span>
+                  <span class="arrow">↗</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Mock UI — replica del catálogo público printall.jmlabs.app (estética neobrutalist) */}
+            <div class="project-media">
+              <div class="mock pa-mock">
+                <div class="pa-window">
+                  <div class="pa-tabs">
+                    <span class="dot"></span><span class="dot"></span><span class="dot on"></span>
+                    <span class="url">printall.jmlabs.app</span>
+                  </div>
+
+                  <div class="pa-eyebrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <rect x="3" y="3" width="7" height="7" rx="1"/>
+                      <rect x="14" y="3" width="7" height="7" rx="1"/>
+                      <rect x="3" y="14" width="7" height="7" rx="1"/>
+                      <rect x="14" y="14" width="7" height="7" rx="1"/>
+                    </svg>
+                    <span>CATÁLOGO</span>
+                  </div>
+
+                  <div class="pa-filters">
+                    <span class="pa-pill">Todos</span>
+                    <span class="pa-pill">Filamentos</span>
+                    <span class="pa-pill on">Mates</span>
+                    <span class="pa-pill">Insumos</span>
+                  </div>
+
+                  <div class="pa-grid">
+                    {/* Card 1 — Filamento */}
+                    <div class="pa-card">
+                      <div class="pa-thumb pa-thumb-1">
+                        <span class="pa-stock pa-stock-ok">
+                          <span class="pa-pulse"></span>Disponible
+                        </span>
+                      </div>
+                      <div class="pa-meta">
+                        <span class="pa-cat">Filamentos</span>
+                        <div class="pa-name">Filamento PLA 3nMax Negro</div>
+                        <div class="pa-price">$19.000</div>
+                      </div>
+                    </div>
+
+                    {/* Card 2 — Soporte bici */}
+                    <div class="pa-card">
+                      <div class="pa-thumb pa-thumb-2">
+                        <span class="pa-stock pa-stock-ok">
+                          <span class="pa-pulse"></span>Disponible
+                        </span>
+                      </div>
+                      <div class="pa-meta">
+                        <span class="pa-cat">Porta-Celulares</span>
+                        <div class="pa-name">Soporte celular bici · PETG</div>
+                        <div class="pa-price">$10.000</div>
+                      </div>
+                    </div>
+
+                    {/* Card 3 — Polímero mate (con stamp Destacado) */}
+                    <div class="pa-card">
+                      <div class="pa-thumb pa-thumb-3">
+                        <span class="pa-stock pa-stock-order">A pedido</span>
+                        <div class="pa-stamp">★ Destacado</div>
+                      </div>
+                      <div class="pa-meta">
+                        <span class="pa-cat">Insumos</span>
+                        <div class="pa-name">Polímero para mate</div>
+                        <div class="pa-price">$3.000</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
     </section>

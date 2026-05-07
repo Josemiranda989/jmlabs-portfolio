@@ -371,17 +371,17 @@ html.light .icon-moon { display: block; }
   box-shadow: 0 0 0 3px color-mix(in oklab, #4ade80 30%, transparent);
 }
 .hero h1 {
+  font-family: "Funnel Display", var(--ff-sans);
   font-size: clamp(3rem, 10vw, 7.5rem);
   line-height: 0.95;
-  font-weight: 300;
-  letter-spacing: -0.035em;
-  font-variation-settings: "opsz" 144, "SOFT" 30;
+  font-weight: 700;
+  letter-spacing: -0.04em;
 }
 .hero h1 .line-2 {
   display: block;
-  font-style: italic;
-  font-weight: 400;
+  font-weight: 500;
   color: var(--accent);
+  letter-spacing: -0.045em;
 }
 .hero-rule {
   width: 64px; height: 1px; background: var(--accent);
@@ -1316,4 +1316,200 @@ html.light .bonus-icons img {
   }
   .bonus-icons { justify-content: flex-start; flex-wrap: wrap; }
   .bonus-icons img { width: 44px; height: 44px; padding: 6px; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Print All mock — replica del catálogo público printall.jmlabs.app
+   Estética neobrutalist: papel claro, bordes 2px, shadow offset, accent orange.
+   ───────────────────────────────────────────────────────────────────────────── */
+.pa-mock {
+  background: #fafaf7;
+  border: 1px solid color-mix(in srgb, #1f1f2b 8%, transparent);
+}
+.pa-window {
+  --pa-brand:    #1f1f2b;
+  --pa-accent:   #ea580c;
+  --pa-emerald:  #10b981;
+  --pa-blue:     #3b82f6;
+  --pa-text:     #1f1f2b;
+  --pa-dim:      #71717a;
+  --pa-paper:    #fafaf7;
+  --pa-card:     #ffffff;
+  --pa-hair:     rgba(31, 31, 43, 0.08);
+  --pa-hair-2:   rgba(31, 31, 43, 0.16);
+
+  height: 100%;
+  padding: var(--s-5);
+  display: flex; flex-direction: column; gap: var(--s-3);
+  font-family: var(--ff-sans);
+  color: var(--pa-text);
+  background:
+    radial-gradient(circle at 22% 14%, color-mix(in srgb, var(--pa-accent) 6%, transparent), transparent 55%),
+    var(--pa-paper);
+}
+.pa-tabs {
+  display: flex; align-items: center; gap: 6px;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  color: var(--pa-dim);
+  margin-bottom: var(--s-2);
+}
+.pa-tabs .dot { width: 9px; height: 9px; border-radius: 50%; background: #d4d4d8; }
+.pa-tabs .dot.on { background: var(--pa-accent); }
+.pa-tabs .url {
+  margin-left: 8px; padding: 3px 8px;
+  background: var(--pa-card);
+  border-radius: 6px;
+  border: 1px solid var(--pa-hair);
+}
+.pa-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pa-accent);
+}
+.pa-eyebrow svg { width: 13px; height: 13px; }
+
+.pa-filters {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  margin-bottom: 4px;
+}
+.pa-pill {
+  font-family: var(--ff-mono);
+  font-size: 9.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--pa-card);
+  border: 1.5px solid var(--pa-hair-2);
+  color: var(--pa-dim);
+}
+.pa-pill.on {
+  background: var(--pa-accent);
+  border-color: var(--pa-accent);
+  color: #fff;
+}
+
+.pa-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: auto;
+}
+.pa-card {
+  background: var(--pa-card);
+  border: 2px solid var(--pa-hair-2);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  box-shadow: 3px 3px 0 var(--pa-hair-2);
+  transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out);
+}
+.pa-card:hover {
+  transform: translate(-1px, -2px);
+  box-shadow: 4px 5px 0 var(--pa-accent);
+}
+.pa-thumb {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background-color: #f4ebde;
+  background-image: radial-gradient(rgba(31, 31, 43, 0.10) 1px, transparent 1px);
+  background-size: 7px 7px;
+  border-bottom: 1.5px solid var(--pa-hair);
+}
+.pa-thumb-1 { background-color: #1a1a1a; background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px); }
+.pa-thumb-2 { background-color: #1f2e3a; background-image: radial-gradient(rgba(255, 255, 255, 0.10) 1px, transparent 1px); }
+.pa-thumb-3 { background-color: #2d1f17; background-image: radial-gradient(rgba(234, 88, 12, 0.18) 1px, transparent 1px); }
+
+.pa-stock {
+  position: absolute;
+  top: 5px; left: 5px;
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: var(--ff-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(2px);
+  color: var(--pa-text);
+}
+.pa-stock-ok .pa-pulse {
+  width: 6px; height: 6px;
+  background: var(--pa-emerald);
+  border-radius: 50%;
+  animation: pulse 1.8s ease-in-out infinite;
+}
+.pa-stock-order { color: var(--pa-blue); border: 1px solid color-mix(in srgb, var(--pa-blue) 30%, transparent); }
+.pa-stock-order::before {
+  content: "";
+  width: 6px; height: 6px;
+  background: var(--pa-blue);
+  border-radius: 50%;
+  margin-right: -1px;
+}
+
+.pa-stamp {
+  position: absolute;
+  top: 5px; right: 5px;
+  font-family: var(--ff-display, var(--ff-serif));
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 3px 7px;
+  border-radius: 4px;
+  background: var(--pa-accent);
+  color: #fff;
+  transform: rotate(6deg);
+  box-shadow: 1px 2px 0 rgba(0, 0, 0, 0.15);
+}
+
+.pa-meta {
+  padding: 8px 9px 9px;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.pa-cat {
+  font-family: var(--ff-mono);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pa-dim);
+  margin-bottom: 1px;
+}
+.pa-name {
+  font-family: var(--ff-sans);
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--pa-text);
+  letter-spacing: -0.01em;
+  /* truncate a 2 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 28px;
+}
+.pa-price {
+  font-family: var(--ff-display, var(--ff-serif));
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--pa-accent);
+  margin-top: 4px;
+  letter-spacing: -0.01em;
+}
+
+@media (max-width: 720px) {
+  .pa-grid { grid-template-columns: repeat(2, 1fr); }
+  .pa-card:nth-child(3) { grid-column: span 2; }
+  .pa-card:nth-child(3) .pa-thumb { aspect-ratio: 2 / 1; }
 }
